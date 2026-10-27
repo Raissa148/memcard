@@ -4,6 +4,18 @@ let matched = 0;
 let cardOne, cardTwo;
 let disableDeck = false;
 
+// Lista das imagens dos personagens (cada uma aparece 2x no tabuleiro)
+const cardImages = [
+    "img/hachi.jpg",
+    "img/nana.jpg",
+    "img/nobu.jpg",
+    "img/reira.jpg",
+    "img/takumi.jpg",
+    "img/shin.jpg",
+    "img/yasushi.jpg",
+    "img/ren.jpg"
+];
+
 function flipCard({target: clickedCard}) {
     if(cardOne !== clickedCard && !disableDeck) {
         clickedCard.classList.add("flip");
@@ -21,7 +33,7 @@ function flipCard({target: clickedCard}) {
 function matchCards(img1, img2) {
     if(img1 === img2) {
         matched++;
-        if(matched == 8) {
+        if(matched === cardImages.length) {
             setTimeout(() => {
                 return shuffleCard();
             }, 1000);
@@ -48,12 +60,13 @@ function shuffleCard() {
     matched = 0;
     disableDeck = false;
     cardOne = cardTwo = "";
-    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+    // Duplica a lista para formar os pares
+    let arr = [...cardImages, ...cardImages];
     arr.sort(() => Math.random() > 0.5 ? 1 : -1);
     cards.forEach((card, i) => {
         card.classList.remove("flip");
         let imgTag = card.querySelector(".back-view img");
-        imgTag.src = `assets/img/img-${arr[i]}.png`;
+        imgTag.src = arr[i];
         card.addEventListener("click", flipCard);
     });
 }
